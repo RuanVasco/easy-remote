@@ -1,3 +1,17 @@
+use gtk4::prelude::*;
+use gtk4::Application;
+
+mod model;
+mod ui;
+mod config;
+
+const APP_ID: &str = "com.github.RuanVasco.vnc-manager";
+
 fn main() {
-    println!("Hello, world!");
+    let app = Application::builder()
+        .application_id(APP_ID)
+        .build();
+
+    app.connect_activate(ui::build);
+    app.run();
 }

@@ -1,7 +1,27 @@
 [package]
-name = "rdp_manager"
+name = "vnc_manager"
 version = "0.1.0"
 edition = "2024"
 license = "GPL-3.0-only"
 
 [dependencies]
+directories = "6.0.0"
+gtk4 = "=0.10.3"
+libadwaita = "0.8.1"
+quick-xml = { version = "0.38.4", features = ["serialize"]}
+serde = { version = "1.0.228", features = ["derive"] }
+
+[package.metadata.deb]
+maintainer = "Ruan <ruanvasconcelos898@gmail.com>"
+copyright = "2025, Ruan Vasco"
+depends = "$auto, xtightvncviewer, gtk4"
+
+assets = [
+    ["target/release/vnc-manager", "usr/bin/", "755"],
+    # ["assets/br.com.cotrisoja.vnc.desktop", "usr/share/applications/", "644"],
+    ["assets/entries.xml", "etc/vnc-manager/entries.xml", "644"]
+]
+
+conf-files = [
+    "/etc/vnc-manager/entries.xml"
+]
