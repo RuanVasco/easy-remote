@@ -22,7 +22,7 @@ impl Entries {
             }
         }
 
-        let system_file = PathBuf::from("/etc/vnc-manager/entries.xml");
+        let system_file = PathBuf::from("/etc/easy-vnc/entries.xml");
         if system_file.exists() {
             return read_file(system_file);
         }
