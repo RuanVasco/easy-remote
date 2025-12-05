@@ -13,7 +13,7 @@ pub struct Entries {
 
 impl Entries {
     pub fn load() -> Vec<VncConnection> {
-        if let Some(proj_dirs) = ProjectDirs::from("com", "github", "vnc-manager") {
+        if let Some(proj_dirs) = ProjectDirs::from("com", "github", "easy-vnc") {
             let config_dir = proj_dirs.config_dir();
             let config_file = config_dir.join("entries.xml");
 

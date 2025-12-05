@@ -1,6 +1,6 @@
 use gtk4::glib::BoxedAnyObject;
-use gtk4::{ListItem, ListView, PolicyType, SignalListItemFactory, SingleSelection, gio, prelude::*};
-use gtk4::{Application, ApplicationWindow, Button, ScrolledWindow};
+use gtk4::{Align, Label, ListItem, ListView, Orientation, PolicyType, SignalListItemFactory, SingleSelection, gio, prelude::*};
+use gtk4::{Application, ApplicationWindow, Button, ScrolledWindow, Box};
 
 use crate::config::Entries;
 use crate::model::VncConnection;
@@ -9,8 +9,8 @@ pub fn build(app: &Application) {
     let store = gio::ListStore::new::<BoxedAnyObject>();
     let entries = Entries::load();
 
-    for conexao in entries {
-        let obj = BoxedAnyObject::new(conexao);
+    for connection in entries {
+        let obj = BoxedAnyObject::new(connection);
         store.append(&obj);
     }
 
@@ -21,29 +21,48 @@ pub fn build(app: &Application) {
     factory.connect_setup(move |_factory, item| {
         let item = item.downcast_ref::<ListItem>().unwrap();
 
-        let button = Button::builder()
+        let hbox = Box::builder()
+            .orientation(Orientation::Horizontal)
+            .spacing(10)
             .margin_top(5)
             .margin_bottom(5)
             .margin_start(10)
             .margin_end(10)
             .build();
 
-        item.set_child(Some(&button));
+        let label = Label::builder()
+            .xalign(0.0)
+            .hexpand(true)
+            .build();
+
+        let button = Button::builder()
+            .label("Conectar")
+            .valign(Align::Center)
+            .build();
+
+        hbox.append(&label);
+        hbox.append(&button);
+
+        item.set_child(Some(&hbox));
     });
 
     factory.connect_bind(move |_factory, item| {
         let item = item.downcast_ref::<ListItem>().unwrap();
 
-        let button = item.child().and_downcast::<Button>().unwrap();
+        let hbox = item.child().and_downcast::<Box>().unwrap();
+
+        let label = hbox.first_child().unwrap().downcast::<Label>().unwrap();
+        let button = hbox.last_child().unwrap().downcast::<Button>().unwrap();
 
         let entry = item.item().and_downcast::<BoxedAnyObject>().unwrap();
+        let vnc_conn = entry.borrow::<VncConnection>();
 
-        let vnc_conn = entry.borrow::<VncConnection>().clone();
+        label.set_label(&format!("{} ({})", vnc_conn.label, vnc_conn.ip));
 
-        button.set_label(&format!("{}", vnc_conn.label));
+        let conn_clone = vnc_conn.clone();
 
         button.connect_clicked(move |_| {
-            vnc_conn.connect();
+            conn_clone.connect();
         });
     });
 
@@ -57,7 +76,7 @@ pub fn build(app: &Application) {
 
     let window = ApplicationWindow::builder()
         .application(app)
-        .title("Lista de Técnicos (GtkListView)")
+        .title("Easy VNC")
         .default_width(350)
         .default_height(500)
         .child(&scrolled_window)

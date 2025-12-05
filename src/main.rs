@@ -5,7 +5,7 @@ mod model;
 mod ui;
 mod config;
 
-const APP_ID: &str = "com.github.RuanVasco.vnc-manager";
+const APP_ID: &str = "com.github.RuanVasco.easy-vnc";
 
 fn main() {
     let app = Application::builder()
