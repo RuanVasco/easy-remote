@@ -16,7 +16,7 @@ serde = { version = "1.0.228", features = ["derive"] }
 [package.metadata.deb]
 maintainer = "Ruan <ruanvasconcelos898@gmail.com>"
 copyright = "2025, Ruan Vasco"
-depends = "$auto, xtightvncviewer, gtk4"
+depends = "$auto, xtightvncviewer, libgtk-4-1"
 
 assets = [
     ["target/release/easy-vnc", "usr/bin/", "755"],
