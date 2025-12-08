@@ -2,6 +2,7 @@ use gtk4::prelude::*;
 use gtk4::Application;
 
 mod model;
+mod service;
 mod ui;
 mod config;
 

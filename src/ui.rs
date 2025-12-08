@@ -4,6 +4,7 @@ use gtk4::{Application, ApplicationWindow, Button, ScrolledWindow, Box};
 
 use crate::config::Entries;
 use crate::model::VncConnection;
+use crate::service::vnc_launcher::VncLauncher;
 
 pub fn build(app: &Application) {
     let store = gio::ListStore::new::<BoxedAnyObject>();
@@ -62,7 +63,7 @@ pub fn build(app: &Application) {
         let conn_clone = vnc_conn.clone();
 
         button.connect_clicked(move |_| {
-            conn_clone.connect();
+            VncLauncher::launch(&conn_clone);
         });
     });
 

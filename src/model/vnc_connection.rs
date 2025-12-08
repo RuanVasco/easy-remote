@@ -1,5 +1,4 @@
 use serde::Deserialize;
-use std::process::Command;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct VncConnection {
@@ -12,16 +11,7 @@ pub struct VncConnection {
 }
 
 impl VncConnection {
-    pub fn connect(&self) {
-        let target = format!("{}::{}", self.ip, self.port);
-
-        let status = Command::new("xtightvncviewer")
-            .arg(&target)
-            .spawn();
-
-        match status {
-            Ok(_) => println!("Cliente VNC iniciado com sucesso!"),
-            Err(e) => eprintln!("Falha ao executar o comando: {}", e),
-        }
+    pub fn address(&self) -> String {
+        format!("{}:{}", self.ip, self.port)
     }
 }
