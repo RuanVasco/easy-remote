@@ -8,7 +8,8 @@ pub struct VncConnection {
     pub ip: String,
     #[serde(rename = "@port")]
     pub port: u16,
-    pub is_connected: Boolean; 
+    #[serde(skip)]
+    pub is_connected: bool,
 }
 
 impl VncConnection {
