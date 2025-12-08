@@ -1,6 +1,9 @@
 use gtk4::glib::BoxedAnyObject;
-use gtk4::{Align, Label, ListItem, ListView, Orientation, PolicyType, SignalListItemFactory, NoSelection, gio, prelude::*};
-use gtk4::{Application, ApplicationWindow, Button, ScrolledWindow, Box};
+use gtk4::{
+    Align, Label, ListItem, ListView, NoSelection, Orientation, PolicyType, SignalListItemFactory,
+    gio, prelude::*,
+};
+use gtk4::{Application, ApplicationWindow, Box, Button, ScrolledWindow};
 
 use crate::config::Entries;
 use crate::model::VncConnection;
@@ -31,10 +34,7 @@ pub fn build(app: &Application) {
             .margin_end(10)
             .build();
 
-        let label = Label::builder()
-            .xalign(0.0)
-            .hexpand(true)
-            .build();
+        let label = Label::builder().xalign(0.0).hexpand(true).build();
 
         let button = Button::builder()
             .label("Conectar")
@@ -63,7 +63,8 @@ pub fn build(app: &Application) {
         let conn_clone = vnc_conn.clone();
 
         button.connect_clicked(move |_| {
-            VncLauncher::launch(&conn_clone);
+            let mut temp_conn = conn_clone.clone();
+            VncLauncher::launch(&mut temp_conn);
         });
     });
 
