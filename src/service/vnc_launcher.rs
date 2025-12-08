@@ -1,14 +1,14 @@
 use crate::model::VncConnection;
-use std::env;
-use std::process::Command;
+use std::process::{Child, Command};
+use std::{env, io};
 
 pub struct VncLauncher;
 
 impl VncLauncher {
-    pub fn launch(connection: &mut VncConnection) {
+    pub fn launch(connection: &mut VncConnection) -> io::Result<Child> {
         let session_type = env::var("XDG_SESSION_TYPE").unwrap_or_default();
         let target = connection.address();
-        let status = if session_type.to_lowercase().contains("wayland") {
+        if session_type.to_lowercase().contains("wayland") {
             Command::new("wayvnc").arg("-c").arg(&target).spawn()
         } else {
             Command::new("x11vnc")
@@ -21,13 +21,6 @@ impl VncLauncher {
                 .arg("-once")
                 .arg("-nopw")
                 .spawn()
-        };
-
-        match status {
-            Ok(_) => {
-                connection.is_connected = true;
-            }
-            Err(e) => eprintln!("Falha ao executar o comando: {}", e),
         }
     }
 }

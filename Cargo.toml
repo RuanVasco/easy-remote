@@ -10,6 +10,7 @@ description = "Gerenciador de conexões VNC simplificado para suporte técnico."
 directories = "6.0.0"
 gtk4 = "=0.10.3"
 libadwaita = "0.8.1"
+async-channel = "2.5.0"
 quick-xml = { version = "0.38.4", features = ["serialize"]}
 serde = { version = "1.0.228", features = ["derive"] }
 
