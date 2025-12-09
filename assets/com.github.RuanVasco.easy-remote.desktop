@@ -1,10 +1,10 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Easy VNC
+Name=Easy Remote
 Comment=Conexão remota simplificada para suporte técnico
-Exec=easy-vnc
-Icon=com.github.RuanVasco.easy-vnc
+Exec=easy-remote
+Icon=com.github.RuanVasco.easy-remote
 Terminal=false
 Categories=Network;RemoteAccess;GTK;
 Keywords=VNC;Remote;Support;
