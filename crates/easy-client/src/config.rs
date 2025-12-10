@@ -27,7 +27,7 @@ impl Entries {
             return read_file(system_file);
         }
 
-        let dev_file = PathBuf::from("assets/entries.xml");
+        let dev_file = PathBuf::from("crates/easy-client/assets/entries.xml");
         if dev_file.exists() {
             return read_file(dev_file);
         }

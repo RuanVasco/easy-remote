@@ -128,12 +128,14 @@ pub fn build(app: &Application) {
                     match msg {
                         VncEvent::ConnectionError(error) => {
                             update_status(&lbl, &error, "status-error");
+                            btn.set_sensitive(true);
+                            btn.set_label("Conectar");
                         }
                         VncEvent::Log(_text) => {}
                         VncEvent::Finished => {
                             btn.set_sensitive(true);
                             btn.set_label("Conectar");
-                            update_status(&lbl, "Disconnected. Ready.", "status-ready");
+                            update_status(&lbl, "Ready.", "status-ready");
                         }
                     }
                 }
@@ -149,11 +151,7 @@ pub fn build(app: &Application) {
                 Ok(mut child) => {
                     button_click.set_sensitive(false);
                     button_click.set_label("Conectando...");
-                    update_status(
-                        &status_click,
-                        "Connection active. Waiting for technician...",
-                        "status-success",
-                    );
+                    update_status(&status_click, "Connection active.", "status-loading");
 
                     if let Some(stderr) = child.stderr.take() {
                         let sender_log = sender.clone();
@@ -217,6 +215,7 @@ pub fn build(app: &Application) {
         .min_content_height(400)
         .child(&list_view)
         .vexpand(true)
+        .has_frame(false)
         .build();
 
     container.append(&scrolled_window);

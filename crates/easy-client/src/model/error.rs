@@ -29,9 +29,7 @@ impl Error {
             Self::WaylandDetected => {
                 "Error: Incompatible graphics system (Wayland detected).".to_string()
             }
-            Self::ConnectionRefused => {
-                "Error: Connection refused. Is the technician listening?".to_string()
-            }
+            Self::ConnectionRefused => "Error: Connection refused.".to_string(),
             Self::Timeout => "Error: Connection timed out.".to_string(),
             // Self::PermissionDenied => "Error: Permission denied.".to_string(),
             // Self::Unknown(msg) => format!("Unexpected Error: {}", msg),
