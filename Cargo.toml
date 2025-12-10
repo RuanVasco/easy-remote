@@ -1,31 +1,8 @@
-[package]
-name = "easy-remote"
-version = "0.1.0"
-authors = ["Ruan <ruanvasconcelos898@gmail.com>"]
-edition = "2024"
-license = "GPL-3.0-only"
-description = "Open-source 'Single Click' remote support client for Linux."
+[workspace]
+resolver = "2"
 
-[dependencies]
-directories = "6.0.0"
-gtk4 = "=0.10.3"
-libadwaita = "0.8.1"
-async-channel = "2.5.0"
-quick-xml = { version = "0.38.4", features = ["serialize"]}
-serde = { version = "1.0.228", features = ["derive"] }
-
-[package.metadata.deb]
-maintainer = "Ruan <ruanvasconcelos898@gmail.com>"
-copyright = "2025, Ruan Vasco"
-depends = "$auto, x11vnc, wayvnc, libgtk-4-1"
-
-assets = [
-    ["target/release/easy-remote", "usr/bin/", "755"],
-    ["assets/com.github.RuanVasco.easy-remote.desktop", "usr/share/applications/", "644"],
-    ["assets/com.github.RuanVasco.easy-remote.svg", "usr/share/icons/hicolor/scalable/apps/", "644"],
-    ["assets/entries.xml", "etc/easy-remote/entries.xml", "644"]
-]
-
-conf-files = [
-    "/etc/easy-remote/entries.xml"
+members = [
+    "crates/easy-client",
+    # "crates/easy-tech",  
+    # "crates/easy-core",  
 ]

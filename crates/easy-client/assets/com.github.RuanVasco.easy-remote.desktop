@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Name=Easy Remote
-Comment=Open-source 'Single Click' remote support client
-Exec=easy-remote
+Comment=Client module for Easy Remote (User side).
+Exec=easy-remote-client
 Icon=com.github.RuanVasco.easy-remote
 Terminal=false
 Categories=Network;RemoteAccess;GTK;
