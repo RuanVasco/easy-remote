@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Easy Remote
+Comment=Client module for Easy Remote (User side).
+Exec=easy-remote-client
+Icon=com.github.RuanVasco.easy-client
+Terminal=false
+Categories=Network;RemoteAccess;GTK;
+Keywords=VNC;Remote;Support;
