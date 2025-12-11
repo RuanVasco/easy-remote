@@ -1,3 +1,5 @@
+use std::fmt;
+
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Clone)]
@@ -13,5 +15,11 @@ pub struct VncConnection {
 impl VncConnection {
     pub fn address(&self) -> String {
         format!("{}:{}", self.ip, self.port)
+    }
+}
+
+impl fmt::Display for VncConnection {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{name} ({ip})", name = self.label, ip = self.ip)
     }
 }

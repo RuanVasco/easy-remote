@@ -13,6 +13,8 @@ directories = "6.0.0"
 async-channel = "2.5.0"
 quick-xml = { version = "0.38.4", features = ["serialize"]}
 serde = { version = "1.0.228", features = ["derive"] }
+xcap = "0.7.1" 
+image = "0.25.9"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 gtk4 = "=0.10.3"

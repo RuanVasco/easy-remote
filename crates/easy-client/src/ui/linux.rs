@@ -125,7 +125,7 @@ fn build_ui(app: &Application) {
         let entry = item.item().and_downcast::<BoxedAnyObject>().unwrap();
         let vnc_conn = entry.borrow::<easy_core::model::VncConnection>();
 
-        label.set_label(&format!("{} ({})", vnc_conn.label, vnc_conn.ip));
+        label.set_label(vnc_conn.to_string());
 
         let conn_wrapper = Rc::new(RefCell::new(vnc_conn.clone()));
 

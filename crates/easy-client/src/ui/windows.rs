@@ -1,8 +1,8 @@
 use crate::{config::Entries, ui::windows::app_layout_ui::AppLayoutUi};
 use easy_core::model::VncConnection;
 use native_windows_derive::NwgUi;
-use native_windows_gui::{self as nwg, NativeUi}; // Importe NativeUi!
-use std::cell::RefCell;
+use native_windows_gui::{self as nwg, NativeUi};
+use std::{cell::RefCell, thread};
 
 #[derive(Default, NwgUi)]
 pub struct AppLayout {
@@ -44,14 +44,26 @@ impl AppLayout {
                 nwg::simple_message("Connecting", &format!("Target: {}", conn.ip));
             }
         }
+
+        let (tx, rx) = async_channel::unbounded();
+
+        crate::service::capture::ScreenCapture::start(tx);
+
+        thread::spawn(move || {
+            while let Ok(frame) = rx.recv_blocking() {
+                println!(
+                    "Recebi frame: {}x{} - Bytes: {}",
+                    frame.width,
+                    frame.height,
+                    frame.data.len()
+                );
+            }
+        });
     }
 
     fn load_data(&self) {
         let entries = Entries::load();
-        let titles: Vec<String> = entries
-            .iter()
-            .map(|e| format!("{} ({})", e.label, e.ip))
-            .collect();
+        let titles: Vec<String> = entries.iter().map(|e| e.to_string()).collect();
 
         self.entry_list.set_collection(titles);
         *self.data.borrow_mut() = entries;
