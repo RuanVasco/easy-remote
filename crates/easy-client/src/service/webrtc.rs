@@ -1,6 +1,9 @@
 use anyhow::Result;
 use image::codecs::jpeg::JpegEncoder;
-use std::{net::SocketAddr, sync::Arc};
+use std::{
+    net::SocketAddr,
+    sync::{Arc, Weak},
+};
 use tokio::{net::UdpSocket, sync::Mutex};
 
 use webrtc::{
@@ -9,7 +12,9 @@ use webrtc::{
     },
     data_channel::{RTCDataChannel, data_channel_state::RTCDataChannelState},
     ice::{
-        udp_mux::{UDPMux, UDPMuxDefault, UDPMuxParams},
+        udp_mux::{
+            UDPMux, UDPMuxConn, UDPMuxConnParams, UDPMuxDefault, UDPMuxParams, UDPMuxWriter,
+        },
         udp_network::UDPNetwork,
     },
     peer_connection::{
@@ -18,12 +23,14 @@ use webrtc::{
         peer_connection_state::RTCPeerConnectionState,
         sdp::{sdp_type::RTCSdpType, session_description::RTCSessionDescription},
     },
+    util::{Conn, conn::conn_udp_listener::UdpConn},
 };
 
 use local_ip_address::local_ip;
 use webrtc::api::setting_engine::SettingEngine;
 use webrtc::ice_transport::ice_candidate_type::RTCIceCandidateType;
 use webrtc::ice_transport::ice_gatherer_state::RTCIceGathererState;
+
 pub struct WebRtcClient {
     peer_connection: Arc<RTCPeerConnection>,
     data_channel: Arc<Mutex<Option<Arc<RTCDataChannel>>>>,
@@ -39,16 +46,11 @@ impl WebRtcClient {
         let my_ip = local_ip()?;
         let addr: SocketAddr = format!("{}:0", my_ip).parse()?;
         let udp_socket = UdpSocket::bind(addr).await?;
+        let local_port = udp_socket.local_addr()?.port();
 
-        println!(
-            "🔧 [CLIENT] Socket aberto na porta: {}",
-            udp_socket.local_addr()?.port()
-        );
-
-        let mux_params = UDPMuxParams::new(udp_socket);
         let mux = UDPMuxDefault::new(mux_params);
-
         let network_option = UDPNetwork::Muxed(mux as Arc<dyn UDPMux + Send + Sync>);
+
         setting_engine.set_udp_network(network_option);
 
         setting_engine.set_nat_1to1_ips(vec![my_ip.to_string()], RTCIceCandidateType::Host);
